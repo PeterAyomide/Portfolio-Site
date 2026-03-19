@@ -1,5 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollScene from "./src/components/ScrollScene";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const PROFILE = {
   firstName: "Peter",
@@ -18,13 +23,44 @@ const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: auto; }
   
   body { 
     background: #040e09; 
     color: #cee8db;
     font-family: 'Manrope', system-ui, sans-serif;
     overflow-x: hidden;
+  }
+
+  .scroll-scene {
+    position: relative;
+    isolation: isolate;
+  }
+  .scroll-scene-content {
+    position: relative;
+    min-height: 100vh;
+    transform-style: preserve-3d;
+  }
+  .scene-shell {
+    position: relative;
+    min-height: 100vh;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+    overflow: hidden;
+  }
+  .scene-darken {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(4,14,9,0.05), rgba(0,0,0,0.95));
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .scene-stage {
+    position: relative;
+    z-index: 4;
+    transform-style: preserve-3d;
+    will-change: transform, opacity, filter;
   }
 
   ::-webkit-scrollbar { width: 4px; }
@@ -121,6 +157,9 @@ const CSS = `
     align-items: flex-start; justify-content: center;
     padding: 0 60px;
     position: relative;
+  }
+  .hero-scene .hero {
+    padding-top: 80px;
   }
   .hero-eyebrow {
     font-family: 'JetBrains Mono', monospace;
@@ -221,6 +260,19 @@ const CSS = `
     padding: 100px 60px;
     position: relative;
   }
+  .projects-scene .section,
+  .about-scene .section {
+    min-height: 100vh;
+  }
+  .projects-stage {
+    transform: translate3d(0, 10vh, -180px);
+    opacity: 0.3;
+    filter: saturate(0.8);
+  }
+  .about-stage {
+    clip-path: inset(100% 0% 0% 0%);
+    will-change: clip-path;
+  }
   .section-glass {
     background: rgba(4, 14, 9, 0.8);
     backdrop-filter: blur(12px);
@@ -286,6 +338,7 @@ const CSS = `
     overflow: hidden;
     transition: border-color 0.3s, transform 0.3s;
     cursor: default;
+    will-change: transform;
   }
   .project-card::before {
     content: '';
@@ -605,6 +658,15 @@ const CSS = `
       animation: none !important;
       transition: none !important;
       scroll-behavior: auto !important;
+    }
+    .scroll-scene-content,
+    .scene-stage,
+    .project-card,
+    .about-stage {
+      transform: none !important;
+      clip-path: none !important;
+      opacity: 1 !important;
+      filter: none !important;
     }
   }
 
