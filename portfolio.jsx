@@ -260,7 +260,21 @@ const CSS = `
     .nav-links { display: none; }
     .nav-menu-btn { display: inline-flex; }
     .hero-name { font-size: 3rem; }
+    .hero-actions { flex-wrap: wrap; }
+    .hero-actions .btn-primary,
+    .hero-actions .btn-ghost {
+      flex: 1 1 220px;
+      text-align: center;
+    }
     .scroll-hint { display: none; }
+  }
+  @media (max-width: 560px) {
+    .hero-actions .btn-primary,
+    .hero-actions .btn-ghost {
+      width: 100%;
+      max-width: 100%;
+      padding: 13px 18px;
+    }
   }
 
   .project-card {
@@ -435,38 +449,6 @@ const CSS = `
   .btn-disabled { opacity: 0.4; cursor: not-allowed; }
   .btn-disabled:hover { transform: none !important; background: inherit !important; }
 
-  /* Skills section */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-  @media (max-width: 1100px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 600px) { .skills-grid { grid-template-columns: 1fr; } }
-  .skill-group {
-    padding: 24px;
-    background: rgba(8,22,14,0.6);
-    border: 1px solid rgba(0,232,122,0.08);
-    border-radius: 12px;
-  }
-  .skill-cat {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 0.82rem;
-    letter-spacing: 0.05em;
-    color: #00e87a;
-    margin-bottom: 14px;
-  }
-  .skill-item {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 0.82rem;
-    color: #7aaa92;
-    padding: 5px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-  .skill-item:last-child { border-bottom: none; }
-  .skill-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(0,232,122,0.4); flex-shrink: 0; }
-
   /* About section */
   .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 60px; align-items: start; }
   @media (max-width: 800px) { .about-grid { grid-template-columns: 1fr; } }
@@ -475,16 +457,16 @@ const CSS = `
     background: rgba(8,22,14,0.8);
     border: 1px solid rgba(0,232,122,0.1);
     border-radius: 16px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    overflow: hidden;
+    display: block;
     max-width: 280px;
   }
-  .avatar-icon { font-size: 64px; opacity: 0.5; }
-  .avatar-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: #3a5548;
-    text-transform: uppercase;
+  .about-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    display: block;
   }
   .about-text p { font-size: 0.95rem; line-height: 1.8; color: #7aaa92; margin-bottom: 16px; }
   .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
@@ -495,15 +477,16 @@ const CSS = `
     border: 1px solid rgba(0,232,122,0.08);
     border-radius: 8px;
   }
-  .stat-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
-    font-size: 1.8rem;
-    letter-spacing: -0.04em;
+  .stat-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: #00e87a;
-    margin-bottom: 2px;
+    margin-bottom: 8px;
   }
-  .stat-label { font-size: 0.75rem; color: #3a6050; }
+  .stat-label { font-size: 0.85rem; color: #7aaa92; line-height: 1.6; }
 
   /* Footer */
   .footer {
@@ -676,19 +659,19 @@ const projects = [
     name: "ForestWise",
     badge: "Live on Edge",
     badgeClass: "badge-blue",
-    tagline: "AI Forestry Intelligence Platform",
-    desc: "An AI-powered silviculture platform built for Nigerian forestry. Features Onyx — a specialized forestry AI with a curated Nigerian species database, real-time environmental data integration, and multi-provider LLM fallback for maximum uptime.",
+    tagline: "Domain AI Case Study: Vertical Intelligence in Production",
+    desc: "ForestWise is my proof that I can go deep in any business domain, not just generic chat apps. I used forestry as the testbed to model expert workflows, merge live field signals, and ship a resilient AI assistant that still performs under real production constraints.",
     color: "#1a7aff",
     cardClass: "project-card-b",
     demoClass: "demo-placeholder-b",
     dotClass: "dot-blue",
     btnPrimary: "btn-card-primary-b",
     features: [
-      { label: "Onyx AI Expert", desc: "Specialized forestry assistant scoped to Nigerian native species with scientific precision" },
-      { label: "Multi-API Environment Data", desc: "Real-time soil (SoilGrids), climate (OpenMeteo), NASA POWER & OpenWeather integration" },
-      { label: "Hydra LLM Fallback", desc: "Cerebras (fastest) → Groq (low latency) → backup — zero single point of failure" },
-      { label: "Project Type Engine", desc: "Tailored advice for agroforestry, restoration, carbon projects, watershed & urban greening" },
-      { label: "Edge Deployed", desc: "Cloudflare Workers — global edge distribution, zero cold starts, built-in CORS handling" },
+      { label: "Deep Vertical Modeling", desc: "Captured domain-specific decision logic so recommendations reflect how real specialists think and execute" },
+      { label: "Real-World Data Fusion", desc: "Combines climate and soil signals to support smarter planning decisions, not generic one-size-fits-all answers" },
+      { label: "Reliability Architecture", desc: "Multi-model fallback design keeps the assistant responsive when one provider degrades or fails" },
+      { label: "Workflow-Aware Guidance", desc: "Adapts recommendations based on project intent, helping teams move from analysis to action" },
+      { label: "Production Delivery", desc: "Edge deployment architecture optimized for global availability and low-latency responses" },
     ],
     tech: ["Cloudflare Workers", "JavaScript", "Cerebras", "Groq", "LLaMA 3.1", "RAG", "SoilGrids API", "NASA POWER", "OpenMeteo", "OpenWeather"],
     metrics: ["Edge-deployed globally", "Multi-LLM fallback", "Nigerian species DB", "5 project types", "Conversation memory"],
@@ -696,13 +679,6 @@ const projects = [
     repoUrl: "https://github.com/PeterAyomide/ForestWise-5.0",
     caseStudyUrl: "#",
   },
-];
-
-const skills = [
-  { cat: "AI & Agents", items: ["Agentic Pipelines", "RAG Systems", "LLM Integration", "Prompt Engineering", "Multi-LLM Orchestration"] },
-  { cat: "Backend", items: ["FastAPI", "Python", "Supabase", "pgvector", "PostgreSQL", "REST APIs"] },
-  { cat: "Infrastructure", items: ["Cloudflare Workers", "Edge Computing", "HMAC Auth", "Rate Limiting", "Webhook Security"] },
-  { cat: "Integrations", items: ["Slack Bots", "Telegram Bots", "SMTP Email", "OpenWeather", "NASA POWER"] },
 ];
 
 const services = [
@@ -927,7 +903,6 @@ export default function Portfolio() {
           <div className="nav-links">
             <a className="nav-link" href="#projects">Projects</a>
             <a className="nav-link" href="#services">Services</a>
-            <a className="nav-link" href="#skills">Skills</a>
             <a className="nav-link" href="#about">About</a>
             <a className="nav-cta" href="#contact">Hire Me</a>
           </div>
@@ -945,7 +920,6 @@ export default function Portfolio() {
         <div className={`mobile-menu ${mobileMenuOpen ? "open" : ""}`} id="mobile-nav">
           <a href="#projects" onClick={closeMenu}>Projects</a>
           <a href="#services" onClick={closeMenu}>Services</a>
-          <a href="#skills" onClick={closeMenu}>Skills</a>
           <a href="#about" onClick={closeMenu}>About</a>
           <a href="#contact" onClick={closeMenu}>Contact</a>
         </div>
@@ -975,7 +949,7 @@ export default function Portfolio() {
         {/* ── PROJECTS ── */}
         <section className="section section-glass" id="projects">
           <div className="section-label mono">Work</div>
-          <h2 className="section-title syne">Production<br />Projects</h2>
+          <h2 className="section-title syne">Selected<br />Production Systems</h2>
           <div className="projects-grid">
             {projects.map((p) => (
               <div key={p.id} className={`project-card ${p.cardClass}`} style={{ "--card-color": p.color }}>
@@ -1077,27 +1051,6 @@ export default function Portfolio() {
 
         <div className="divider" />
 
-        {/* ── SKILLS ── */}
-        <section className="section section-glass" id="skills">
-          <div className="section-label mono">Capabilities</div>
-          <h2 className="section-title syne">What I<br />Build With</h2>
-          <div className="skills-grid">
-            {skills.map((g) => (
-              <div key={g.cat} className="skill-group">
-                <div className="skill-cat syne">{g.cat}</div>
-                {g.items.map((item) => (
-                  <div key={item} className="skill-item">
-                    <div className="skill-dot" />
-                    {item}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <div className="divider" />
-
         {/* ── ABOUT ── */}
         <section className="section section-glass" id="about">
           <div className="section-label mono">Background</div>
@@ -1105,8 +1058,7 @@ export default function Portfolio() {
           <div className="about-grid">
             <div>
               <div className="about-avatar">
-                <div className="avatar-icon">🌳</div>
-                <span className="avatar-label mono">Peter Adegboye</span>
+                <img src="/images/adegboye_peter.jpg" alt="Peter Adegboye headshot" loading="lazy" />
               </div>
             </div>
             <div className="about-text">
@@ -1126,16 +1078,16 @@ export default function Portfolio() {
               </div>
               <div className="about-stats">
                 <div className="about-stat">
-                  <div className="stat-num syne">2</div>
-                  <div className="stat-label">Production Projects</div>
+                  <div className="stat-kicker">Built In Production</div>
+                  <div className="stat-label">Systems designed for real teams with reliability, security, and operational guardrails in place.</div>
                 </div>
                 <div className="about-stat">
-                  <div className="stat-num syne">5+</div>
-                  <div className="stat-label">AI APIs Integrated</div>
+                  <div className="stat-kicker">No No-Code Dependency</div>
+                  <div className="stat-label">Custom engineering approach from API orchestration to backend architecture for long-term control.</div>
                 </div>
                 <div className="about-stat">
-                  <div className="stat-num syne">∞</div>
-                  <div className="stat-label">Problems to Solve</div>
+                  <div className="stat-kicker">End-to-End Ownership</div>
+                  <div className="stat-label">From discovery and design through deployment, testing, monitoring, and continuous iteration.</div>
                 </div>
               </div>
             </div>
